@@ -163,19 +163,19 @@ def decode_protobuf(binary):
 
 def fetch_player_info(uid):
     try:
-        url = f"https://nr-codex-info.vercel.app/get?uid={uid}"
-        response = requests.get(url, timeout=5)
+        url = f"https://starhosterpanel.qzz.io/accinfo?uid={uid}"
+        response = requests.get(url, timeout=10)
         if response.status_code == 200:
             data = response.json()
-            account_info = data.get("AccountInfo", {})
+            account_info = data.get("basicInfo", {})
             return {
-                "Level": account_info.get("AccountLevel", "NA"),
-                "Region": account_info.get("AccountRegion", "NA"),
-                "ReleaseVersion": account_info.get("ReleaseVersion", "NA")
+                "Level": account_info.get("level", "NA"),
+                "Region": account_info.get("region", "NA"),
+                "ReleaseVersion": account_info.get("releaseVersion", "NA")
             }
         else:
             app.logger.error(f"Player info API failed with status code: {response.status_code}")
-            return {"Level": "NA", "Region": "NA", "ReleaseVersion": "NA"}
+            return {"Level": "NA", "Region": "NA", "releaseVersion": "NA"}
     except Exception as e:
         app.logger.error(f"Error fetching player info from API: {e}")
         return {"Level": "NA", "Region": "NA", "ReleaseVersion": "NA"}
@@ -268,4 +268,4 @@ def handle_requests():
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=False)
-        
+                
